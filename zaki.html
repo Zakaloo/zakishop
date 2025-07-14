@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>فروشگاه سکه کوییز رپ فارسی</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
+            min-height: 100vh;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        .coin-package {
+            background: linear-gradient(145deg, #673ab7, #512da8);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .coin-package:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        .coin-package:active {
+            transform: translateY(0);
+        }
+        .coin-package::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(45deg);
+            pointer-events: none;
+        }
+        .popular-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            color: white;
+            padding: 0.25rem 1rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transform: translateX(30%) translateY(0%) rotate(45deg);
+            transform-origin: top left;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .coin {
+            background: radial-gradient(circle, #ffd700 0%, #ffaa00 100%);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+        .payment-method {
+            transition: all 0.2s ease;
+        }
+        .payment-method:hover {
+            transform: scale(1.05);
+        }
+        .payment-method.selected {
+            border-color: #9c27b0;
+            background-color: rgba(156, 39, 176, 0.1);
+        }
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        .pulse-animation {
+            animation: pulse 1.5s infinite;
+        }
+        .modal {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+        .discount-badge {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            transform: rotate(-15deg);
+        }
+        .header-coin {
+            animation: spin 4s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        .special-offer {
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            clip-path: polygon(0% 0%, 100% 0%, 95% 50%, 100% 100%, 0% 100%, 5% 50%);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-4">
+    <!-- هدر -->
+    <header class="bg-white bg-opacity-90 rounded-2xl p-4 max-w-md w-full shadow-2xl mb-6">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center mr-3 header-coin">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-800" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black text-purple-900">فروشگاه سکه</h1>
+                    <p class="text-sm text-gray-600">کوییز رپ فارسی</p>
+                </div>
+            </div>
+            <a href="#" class="bg-purple-100 text-purple-800 p-2 rounded-full" id="back-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <!-- بنر تخفیف ویژه -->
+    <div class="special-offer w-full max-w-md mb-6 p-3 text-white text-center font-bold">
+        <div class="flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm4.707 3.707a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 9H10a3 3 0 013 3v1a1 1 0 102 0v-1a5 5 0 00-5-5H8.414l1.293-1.293z" clip-rule="evenodd" />
+            </svg>
+            تخفیف ویژه: ۳۰٪ تخفیف در خرید اولین بسته!
+        </div>
+    </div>
+
+    <!-- بسته‌های سکه -->
+    <div class="grid grid-cols-1 gap-4 max-w-md w-full mb-6">
+        <div class="coin-package p-4 rounded-xl text-white relative">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 coin rounded-full flex items-center justify-center mr-3">
+                        <span class="text-yellow-900 font-bold">۵۰۰</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">بسته مبتدی</h3>
+                        <p class="text-xs text-gray-200">۵۰۰ سکه</p>
+                    </div>
+                </div>
+                <button class="buy-btn bg-white text-purple-900 px-4 py-2 rounded-lg font-bold">
+                    ۱۰,۰۰۰ تومان
+                </button>
+            </div>
+        </div>
+
+        <div class="coin-package p-4 rounded-xl text-white relative">
+            <div class="popular-badge">محبوب</div>
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 coin rounded-full flex items-center justify-center mr-3">
+                        <span class="text-yellow-900 font-bold">۱۵۰۰</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">بسته حرفه‌ای</h3>
+                        <p class="text-xs text-gray-200">۱۵۰۰ سکه + ۲۰۰ سکه هدیه</p>
+                    </div>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-xs text-gray-300 line-through">۳۰,۰۰۰ تومان</span>
+                    <button class="buy-btn bg-white text-purple-900 px-4 py-2 rounded-lg font-bold pulse-animation">
+                        ۲۵,۰۰۰ تومان
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coin-package p-4 rounded-xl text-white relative">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 coin rounded-full flex items-center justify-center mr-3">
+                        <span class="text-yellow-900 font-bold">۳۰۰۰</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">بسته VIP</h3>
+                        <p class="text-xs text-gray-200">۳۰۰۰ سکه + ۵۰۰ سکه هدیه</p>
+                    </div>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-xs text-gray-300 line-through">۵۰,۰۰۰ تومان</span>
+                    <button class="buy-btn bg-white text-purple-900 px-4 py-2 rounded-lg font-bold">
+                        ۴۵,۰۰۰ تومان
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="coin-package p-4 rounded-xl text-white relative">
+            <div class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md discount-badge">
+                ۴۰٪ تخفیف
+            </div>
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 coin rounded-full flex items-center justify-center mr-3">
+                        <span class="text-yellow-900 font-bold">۱۰۰۰۰</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">بسته الماس</h3>
+                        <p class="text-xs text-gray-200">۱۰۰۰۰ سکه + ۲۰۰۰ سکه هدیه</p>
+                    </div>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-xs text-gray-300 line-through">۱۲۰,۰۰۰ تومان</span>
+                    <button class="buy-btn bg-white text-purple-900 px-4 py-2 rounded-lg font-bold">
+                        ۷۵,۰۰۰ تومان
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- مزایا -->
+    <div class="bg-white bg-opacity-90 rounded-2xl p-6 max-w-md w-full shadow-2xl mb-6">
+        <h2 class="text-xl font-bold text-purple-900 mb-4 text-center">مزایای خرید سکه</h2>
+        
+        <div class="grid grid-cols-1 gap-4">
+            <div class="flex items-start">
+                <div class="bg-purple-100 p-2 rounded-lg ml-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800">دسترسی به مراحل بیشتر</h3>
+                    <p class="text-sm text-gray-600">با خرید سکه می‌توانید به مراحل سخت‌تر و چالشی‌تر دسترسی پیدا کنید.</p>
+                </div>
+            </div>
+            
+            <div class="flex items-start">
+                <div class="bg-purple-100 p-2 rounded-lg ml-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800">زمان اضافه</h3>
+                    <p class="text-sm text-gray-600">با خرید زمان اضافه، فرصت بیشتری برای پاسخ به سوالات خواهید داشت.</p>
+                </div>
+            </div>
+            
+            <div class="flex items-start">
+                <div class="bg-purple-100 p-2 rounded-lg ml-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800">بسته‌های سوال جدید</h3>
+                    <p class="text-sm text-gray-600">با سکه می‌توانید بسته‌های سوال جدید با موضوعات متنوع خریداری کنید.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- روش‌های پرداخت -->
+    <div class="bg-white bg-opacity-90 rounded-2xl p-6 max-w-md w-full shadow-2xl">
+        <h2 class="text-xl font-bold text-purple-900 mb-4 text-center">روش‌های پرداخت</h2>
+        
+        <div class="grid grid-cols-3 gap-3 mb-6">
+            <div class="payment-method border-2 border-gray-200 rounded-lg p-3 flex flex-col items-center cursor-pointer">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                </div>
+                <span class="text-xs text-gray-700 text-center">کارت به کارت</span>
+            </div>
+            
+            <div class="payment-method border-2 border-gray-200 rounded-lg p-3 flex flex-col items-center cursor-pointer selected">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <span class="text-xs text-gray-700 text-center">درگاه بانکی</span>
+            </div>
+            
+            <div class="payment-method border-2 border-gray-200 rounded-lg p-3 flex flex-col items-center cursor-pointer">
+                <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <span class="text-xs text-gray-700 text-center">کیف پول</span>
+            </div>
+        </div>
+        
+        <button id="checkout-btn" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300">
+            ادامه فرآیند خرید
+        </button>
+    </div>
+
+    <!-- مودال پرداخت -->
+    <div id="payment-modal" class="hidden fixed inset-0 flex items-center justify-center z-50 modal">
+        <div class="bg-white rounded-2xl p-6 max-w-xs w-full shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-purple-900">پرداخت</h3>
+                <button id="close-modal" class="bg-gray-200 p-1 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">بسته انتخابی:</span>
+                    <span class="font-bold text-gray-800" id="selected-package">بسته حرفه‌ای</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">تعداد سکه:</span>
+                    <span class="font-bold text-gray-800" id="coin-amount">۱۵۰۰ + ۲۰۰ هدیه</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">مبلغ قابل پرداخت:</span>
+                    <span class="font-bold text-gray-800" id="final-price">۲۵,۰۰۰ تومان</span>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                    ایمیل (اختیاری):
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="example@gmail.com">
+            </div>
+            
+            <div class="flex justify-between">
+                <button id="cancel-payment" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300">
+                    انصراف
+                </button>
+                <button id="confirm-payment" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300">
+                    پرداخت
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال تأیید -->
+    <div id="success-modal" class="hidden fixed inset-0 flex items-center justify-center z-50 modal">
+        <div class="bg-white rounded-2xl p-6 max-w-xs w-full shadow-2xl text-center">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            
+            <h3 class="text-xl font-bold text-green-600 mb-2">پرداخت موفق</h3>
+            <p class="text-gray-700 mb-6">
+                خرید شما با موفقیت انجام شد. سکه‌ها به حساب شما اضافه شدند.
+            </p>
+            
+            <button id="back-to-game" class="bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 px-8 rounded-xl transition-all duration-300 w-full">
+                بازگشت به بازی
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // انتخاب روش پرداخت
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', () => {
+                paymentMethods.forEach(m => m.classList.remove('selected'));
+                method.classList.add('selected');
+            });
+        });
+
+        // دکمه‌های خرید
+        const buyButtons = document.querySelectorAll('.buy-btn');
+        buyButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const packageElement = e.target.closest('.coin-package');
+                const packageTitle = packageElement.querySelector('h3').textContent;
+                const coinAmount = packageElement.querySelector('p').textContent;
+                const price = button.textContent.trim();
+                
+                document.getElementById('selected-package').textContent = packageTitle;
+                document.getElementById('coin-amount').textContent = coinAmount;
+                document.getElementById('final-price').textContent = price;
+                
+                document.getElementById('payment-modal').classList.remove('hidden');
+            });
+        });
+
+        // دکمه ادامه فرآیند خرید
+        document.getElementById('checkout-btn').addEventListener('click', () => {
+            document.getElementById('payment-modal').classList.remove('hidden');
+        });
+
+        // بستن مودال پرداخت
+        document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('payment-modal').classList.add('hidden');
+        });
+
+        document.getElementById('cancel-payment').addEventListener('click', () => {
+            document.getElementById('payment-modal').classList.add('hidden');
+        });
+
+        // تأیید پرداخت
+        document.getElementById('confirm-payment').addEventListener('click', () => {
+            document.getElementById('payment-modal').classList.add('hidden');
+            document.getElementById('success-modal').classList.remove('hidden');
+        });
+
+        // بازگشت به بازی
+        document.getElementById('back-to-game').addEventListener('click', () => {
+            document.getElementById('success-modal').classList.add('hidden');
+            alert('در نسخه واقعی، کاربر به بازی بازگردانده می‌شود و سکه‌ها به حساب او اضافه می‌شوند.');
+        });
+
+        // دکمه بازگشت
+        document.getElementById('back-btn').addEventListener('click', () => {
+            alert('در نسخه واقعی، کاربر به بازی بازگردانده می‌شود.');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95f41d48e3092d92',t:'MTc1MjUyODU1NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
